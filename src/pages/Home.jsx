@@ -14,7 +14,7 @@ const highlights = [
   {
     value: '02',
     title: 'Composer',
-    text: 'On construit une assiette simple, plaisante et adaptee a vos rythmes.',
+    text: 'On construit une assiette simple, plaisante et adaptée à vos rythmes.',
   },
   {
     value: '03',
@@ -24,24 +24,42 @@ const highlights = [
 ];
 
 const metrics = [
-  { value: '45 min', label: 'pour un premier bilan structure' },
-  { value: '3 axes', label: 'digestion, energie, habitudes' },
-  { value: '0 dogme', label: 'des reperes, pas d’interdits inutiles' },
+  { value: '45 min', label: 'pour un premier bilan structuré' },
+  { value: '3 axes', label: 'digestion, énergie, habitudes' },
+  { value: '0 dogme', label: 'des repères, pas d’interdits inutiles' },
 ];
 
 const Home = () => {
   const heroRef = useRef(null);
+  const heroFrameRef = useRef(null);
+  const testimonialTimerRef = useRef(null);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   useReveal();
 
   useEffect(() => {
-    const interval = window.setInterval(() => {
+    testimonialTimerRef.current = window.setInterval(() => {
       setActiveTestimonial((current) => (current + 1) % testimonials.length);
     }, 5200);
 
-    return () => window.clearInterval(interval);
+    return () => window.clearInterval(testimonialTimerRef.current);
   }, []);
+
+  useEffect(() => {
+    return () => window.cancelAnimationFrame(heroFrameRef.current);
+  }, []);
+
+  const resetTestimonialTimer = () => {
+    window.clearInterval(testimonialTimerRef.current);
+    testimonialTimerRef.current = window.setInterval(() => {
+      setActiveTestimonial((current) => (current + 1) % testimonials.length);
+    }, 5200);
+  };
+
+  const showTestimonial = (nextIndex) => {
+    setActiveTestimonial((nextIndex + testimonials.length) % testimonials.length);
+    resetTestimonialTimer();
+  };
 
   const handleHeroMove = (event) => {
     const bounds = heroRef.current?.getBoundingClientRect();
@@ -50,25 +68,28 @@ const Home = () => {
     const x = (event.clientX - bounds.left) / bounds.width - 0.5;
     const y = (event.clientY - bounds.top) / bounds.height - 0.5;
 
-    heroRef.current.style.setProperty('--mouse-x', x.toFixed(3));
-    heroRef.current.style.setProperty('--mouse-y', y.toFixed(3));
+    window.cancelAnimationFrame(heroFrameRef.current);
+    heroFrameRef.current = window.requestAnimationFrame(() => {
+      heroRef.current?.style.setProperty('--mouse-x', x.toFixed(3));
+      heroRef.current?.style.setProperty('--mouse-y', y.toFixed(3));
+    });
   };
 
   return (
     <>
       <section className="home-hero" ref={heroRef} onMouseMove={handleHeroMove}>
         <div className="hero-copy" data-reveal="up">
-          <p className="eyebrow">Cabinet de dietetique a Noisiel</p>
-          <h1>Une nutrition lisible, precise et vraiment adaptee a votre quotidien.</h1>
+          <p className="eyebrow">Cabinet de diététique à Noisiel</p>
+          <h1>Une nutrition lisible, précise et vraiment adaptée à votre quotidien.</h1>
           <p>
             Ines vous accompagne avec une approche fonctionnelle qui relie alimentation,
-            digestion, energie et habitudes de vie, sans injonctions ni regimes standardises.
+            digestion, énergie et habitudes de vie, sans injonctions ni régimes standardisés.
           </p>
           <div className="hero-actions">
             <a href={doctolibUrl} target="_blank" rel="noreferrer">
               Prendre rendez-vous
             </a>
-            <a href="#approche">Decouvrir l’approche</a>
+            <a href="#approche">Découvrir l’approche</a>
           </div>
         </div>
 
@@ -82,7 +103,7 @@ const Home = () => {
           <div className="floating-panel panel-main">
             <span>Suivi</span>
             <strong>100%</strong>
-            <small>personnalise</small>
+            <small>personnalisé</small>
           </div>
           <div className="floating-panel panel-secondary">
             <span>Cabinet</span>
@@ -92,18 +113,18 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="kinetic-strip" aria-label="Reperes d'accompagnement" data-reveal="up">
+      <section className="kinetic-strip" aria-label="Repères d'accompagnement" data-reveal="up">
         <div className="ticker">
           <span>digestion</span>
-          <span>energie</span>
+          <span>énergie</span>
           <span>microbiote</span>
-          <span>satiete</span>
+          <span>satiété</span>
           <span>rythme de vie</span>
           <span>plaisir</span>
           <span>digestion</span>
-          <span>energie</span>
+          <span>énergie</span>
           <span>microbiote</span>
-          <span>satiete</span>
+          <span>satiété</span>
           <span>rythme de vie</span>
           <span>plaisir</span>
         </div>
@@ -111,8 +132,8 @@ const Home = () => {
 
       <section className="section-grid" id="approche">
         <div className="section-intro" data-reveal="left">
-          <p className="eyebrow">Methode</p>
-          <h2>Une progression claire, centree sur ce qui compte.</h2>
+          <p className="eyebrow">Méthode</p>
+          <h2>Une progression claire, centrée sur ce qui compte.</h2>
         </div>
         <div className="service-grid" data-reveal="right">
           {services.map((service, index) => (
@@ -153,7 +174,7 @@ const Home = () => {
           </article>
           <article>
             <span>Horaires</span>
-            <strong>Lun. a ven. 09h-21h · Sam. 09h-16h</strong>
+            <strong>Lun. à ven. 09h-21h · Sam. 09h-16h</strong>
           </article>
           <article>
             <span>Contact</span>
@@ -177,6 +198,14 @@ const Home = () => {
           <h2>Un accompagnement concret, sans complexifier l’assiette.</h2>
         </div>
         <div className="testimonial-slider">
+          <button
+            className="testimonial-arrow testimonial-arrow-prev"
+            type="button"
+            aria-label="Témoignage précédent"
+            onClick={() => showTestimonial(activeTestimonial - 1)}
+          >
+            <span aria-hidden="true">←</span>
+          </button>
           <div className="testimonial-stage">
             {testimonials.map((testimonial, index) => (
               <blockquote
@@ -189,14 +218,22 @@ const Home = () => {
               </blockquote>
             ))}
           </div>
-          <div className="slider-controls" aria-label="Navigation des temoignages">
+          <button
+            className="testimonial-arrow testimonial-arrow-next"
+            type="button"
+            aria-label="Témoignage suivant"
+            onClick={() => showTestimonial(activeTestimonial + 1)}
+          >
+            <span aria-hidden="true">→</span>
+          </button>
+          <div className="slider-controls" aria-label="Navigation des témoignages">
             {testimonials.map((testimonial, index) => (
               <button
                 key={testimonial.author}
                 className={index === activeTestimonial ? 'is-active' : ''}
                 type="button"
-                aria-label={`Afficher le temoignage ${index + 1}`}
-                onClick={() => setActiveTestimonial(index)}
+                aria-label={`Afficher le témoignage ${index + 1}`}
+                onClick={() => showTestimonial(index)}
               />
             ))}
           </div>

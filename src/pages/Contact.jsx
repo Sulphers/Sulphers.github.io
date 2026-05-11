@@ -3,9 +3,9 @@ import { contact, doctolibUrl } from '../data/siteData';
 import { useReveal } from '../hooks/useReveal';
 
 const options = [
-  { label: 'Cabinet', text: 'Un rendez-vous a Noisiel pour poser les bases du suivi.' },
-  { label: 'Visio', text: 'La meme preparation, avec plus de flexibilite.' },
-  { label: 'Email', text: 'Ideal pour une question simple avant de reserver.' },
+  { label: 'Cabinet', text: 'Un rendez-vous à Noisiel pour poser les bases du suivi.' },
+  { label: 'Visio', text: 'La même préparation, avec plus de flexibilité.' },
+  { label: 'Email', text: 'Idéal pour une question simple avant de réserver.' },
 ];
 
 const Contact = () => {
@@ -16,7 +16,7 @@ const Contact = () => {
       <PageHero
         eyebrow="Contact"
         title="Choisissez le canal le plus simple pour vous."
-        text="Le cabinet recoit a Noisiel et propose aussi des consultations a distance. Les rendez-vous se reservent en ligne."
+        text="Le cabinet reçoit à Noisiel et propose aussi des consultations à distance. Les rendez-vous se réservent en ligne."
       />
 
       <section className="contact-options" data-reveal="up">
@@ -30,19 +30,19 @@ const Contact = () => {
 
       <section className="contact-layout">
         <div className="contact-card" data-reveal="left">
-          <p className="eyebrow">Coordonnees</p>
+          <p className="eyebrow">Coordonnées</p>
           <h2>Cabinet Ines</h2>
           <a href={contact.phoneHref}>{contact.phone}</a>
           <a href={contact.emailHref}>{contact.email}</a>
           <p>{contact.address}</p>
           <a className="primary-link" href={doctolibUrl} target="_blank" rel="noreferrer">
-            Reserver sur Doctolib
+            Réserver sur Doctolib
           </a>
         </div>
 
         <form className="contact-form" action={contact.emailHref} method="post" encType="text/plain" data-reveal="right">
           <p className="eyebrow">Message</p>
-          <h2>Preparer une demande</h2>
+          <h2>Préparer une demande</h2>
           <label>
             Nom
             <input name="name" type="text" autoComplete="name" required />
@@ -60,7 +60,7 @@ const Contact = () => {
 
         <div className="map-panel" data-reveal="up">
           <iframe
-            title="Localisation du cabinet Ines a Noisiel"
+            title="Localisation du cabinet Ines à Noisiel"
             src="https://www.google.com/maps?q=7%20cour%20des%20Roches%20Noisiel&output=embed"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
