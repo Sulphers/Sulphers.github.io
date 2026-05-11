@@ -224,7 +224,7 @@ a {
   --mouse-x: 0;
   --mouse-y: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(340px, 0.86fr);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.74fr);
   gap: clamp(28px, 5vw, 68px);
   align-items: center;
   min-height: calc(100vh - 92px);
@@ -293,6 +293,8 @@ a {
 .hero-visual {
   position: relative;
   isolation: isolate;
+  width: min(100%, 490px);
+  justify-self: center;
   transform:
     rotateX(calc(var(--mouse-y) * -5deg))
     rotateY(calc(var(--mouse-x) * 6deg))
